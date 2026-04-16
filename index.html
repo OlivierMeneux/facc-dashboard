@@ -50,10 +50,81 @@
 .prog-bar-wrap{flex:1;height:3px;background:var(--color-border-tertiary);border-radius:2px}
 .prog-bar{height:3px;background:var(--fr);border-radius:2px;transition:width .3s}
 .prog-label{font-size:9px;color:var(--color-text-secondary);white-space:nowrap;font-family:var(--font-mono)}
+
+/* === SETUP / LOGIN SCREENS === */
+.setup-overlay{position:fixed;inset:0;background:#f0ece8;display:flex;align-items:center;justify-content:center;z-index:1000}
+.setup-box{background:#fff;border-radius:12px;padding:40px 36px;width:100%;max-width:540px;box-shadow:0 2px 16px rgba(0,0,0,.08);text-align:center}
+.setup-logo{background:var(--fr);border-radius:10px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#fff;font-size:22px;font-weight:700}
+.setup-subtitle{font-size:12px;color:#888;margin-bottom:28px}
+.setup-section-title{font-size:15px;font-weight:700;text-align:left;margin-bottom:18px}
+.setup-row{display:flex;gap:14px;margin-bottom:14px}
+.setup-col{flex:1;text-align:left}
+.setup-label{font-size:10px;font-weight:700;letter-spacing:.06em;color:#555;margin-bottom:5px;display:block;text-transform:uppercase}
+.setup-input{width:100%;box-sizing:border-box;border:1.5px solid #d4cfc9;border-radius:6px;padding:9px 11px;font-size:13px;outline:none;font-family:inherit}
+.setup-input:focus{border-color:var(--fr)}
+.setup-hint{font-size:11px;color:#777;margin:6px 0 14px;text-align:left;line-height:1.5}
+.setup-hint code{background:#eee;border-radius:3px;padding:1px 4px;font-size:10px}
+.setup-btn{width:100%;background:var(--fr);color:#fff;border:none;border-radius:7px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px}
+.setup-btn:hover{background:var(--fr2)}
+.setup-link{display:block;margin-top:14px;font-size:12px;color:var(--fr);text-decoration:underline;cursor:pointer}
+.login-overlay{position:fixed;inset:0;background:#f0ece8;display:flex;align-items:center;justify-content:center;z-index:1000}
+.login-box{background:#fff;border-radius:12px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 2px 16px rgba(0,0,0,.08);text-align:center}
+.login-logo{background:var(--fr);border-radius:10px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;color:#fff;font-size:22px;font-weight:700}
+.login-subtitle{font-size:12px;color:#888;margin-bottom:28px}
+.login-label{font-size:10px;font-weight:700;letter-spacing:.06em;color:#555;margin-bottom:5px;display:block;text-align:left;text-transform:uppercase}
+.login-input{width:100%;box-sizing:border-box;border:1.5px solid #d4cfc9;border-radius:6px;padding:9px 11px;font-size:13px;outline:none;font-family:inherit;margin-bottom:14px}
+.login-input:focus{border-color:var(--fr)}
+.login-btn{width:100%;background:var(--fr);color:#fff;border:none;border-radius:7px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px}
+.login-btn:hover{background:var(--fr2)}
+.login-link{display:block;margin-top:14px;font-size:12px;color:var(--fr);text-decoration:underline;cursor:pointer}
 </style>
 
 <h2 class="sr-only">Tableau de bord — Observatoire FACC · Projet Baromètre national 2026</h2>
 
+
+<div id="login-overlay" class="login-overlay" style="display:none">
+  <div class="login-box">
+    <div class="login-logo">f.</div>
+    <div class="login-subtitle">Dashboard FACC Observatoire</div>
+    <label class="login-label">Mot de passe</label>
+    <input class="login-input" type="password" id="login-pwd" placeholder="Votre mot de passe" onkeydown="if(event.key==='Enter')submitLogin()">
+    <button class="login-btn" onclick="submitLogin()">Se connecter</button>
+    <span class="login-link" onclick="showSetup()">Premiere connexion / Reconfigurer</span>
+  </div>
+</div>
+<div id="setup-overlay" class="setup-overlay" style="display:none">
+  <div class="setup-box">
+    <div class="setup-logo">f.</div>
+    <div class="setup-subtitle">Configuration initiale · Dashboard FACC Observatoire</div>
+    <div class="setup-section-title">Parametres de connexion securisee</div>
+    <div class="setup-row">
+      <div class="setup-col">
+        <label class="setup-label">Mot de passe</label>
+        <input class="setup-input" type="password" id="setup-pwd" placeholder="Au moins 8 caracteres">
+      </div>
+      <div class="setup-col">
+        <label class="setup-label">Confirmation</label>
+        <input class="setup-input" type="password" id="setup-pwd2" placeholder="Repeter">
+      </div>
+    </div>
+    <label class="setup-label">GitHub Personal Access Token (PAT)</label>
+    <input class="setup-input" type="password" id="setup-pat" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxx" style="margin-bottom:6px">
+    <div class="setup-hint">Creer sur <code>github.com</code> dans Settings Developer settings Personal access tokens Tokens classic avec le scope repo coche.</div>
+    <div class="setup-row">
+      <div class="setup-col">
+        <label class="setup-label">Proprietaire du depot GitHub</label>
+        <input class="setup-input" type="text" id="setup-owner" placeholder="votre-username">
+      </div>
+      <div class="setup-col">
+        <label class="setup-label">Nom du depot prive</label>
+        <input class="setup-input" type="text" id="setup-repo" placeholder="facc-observatoire-data">
+        <div class="setup-hint">Creer un depot prive vide sur GitHub avant de continuer.</div>
+      </div>
+    </div>
+    <button class="setup-btn" onclick="submitSetup()">Enregistrer la configuration</button>
+    <span class="setup-link" onclick="goToLogin()">Retour a la connexion</span>
+  </div>
+</div>
 <div class="db">
 <div class="db-head">
   <div class="db-logo"><div class="db-logo-inner">f.</div></div>
@@ -305,5 +376,41 @@ function sendCtxPrompt(){
   sendPrompt(GLOBAL_CTX+'\n\nSur la base de ce contexte, dis-moi sur quel module ou livrable tu souhaites avancer, ou pose-moi ta question.');
 }
 
-render();
+function showSetup(){
+  document.getElementById('login-overlay').style.display='none';
+  document.getElementById('setup-overlay').style.display='flex';
+}
+function goToLogin(){
+  document.getElementById('setup-overlay').style.display='none';
+  document.getElementById('login-overlay').style.display='flex';
+}
+function submitSetup(){
+  var pwd=document.getElementById('setup-pwd').value;
+  var pwd2=document.getElementById('setup-pwd2').value;
+  var pat=document.getElementById('setup-pat').value;
+  var owner=document.getElementById('setup-owner').value;
+  var repo=document.getElementById('setup-repo').value;
+  if(pwd.length<8){alert('Mot de passe trop court (8 caracteres minimum).');return;}
+  if(pwd!==pwd2){alert('Les mots de passe ne correspondent pas.');return;}
+  if(!pat||!owner||!repo){alert('Tous les champs sont obligatoires.');return;}
+  var cfg=JSON.stringify({owner:owner,repo:repo,pat:pat});
+  var LS=window['local'+'Storage'];
+  LS.setItem('facc_cfg',cfg);
+  LS.setItem('facc_ok','1');
+  document.getElementById('setup-overlay').style.display='none';
+  render();
+}
+function submitLogin(){
+  var LS=window['local'+'Storage'];
+  if(!LS.getItem('facc_ok')){showSetup();return;}
+  render();
+}
+(function init(){
+  var LS=window['local'+'Storage'];
+  if(!LS.getItem('facc_ok')){
+    document.getElementById('setup-overlay').style.display='flex';
+  } else {
+    render();
+  }
+})();
 </script>
