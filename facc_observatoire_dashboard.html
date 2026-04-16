@@ -1,0 +1,309 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--fr:#C0392B;--fr2:#A93226;--fr-bg:rgba(192,57,43,0.07);--fr-bg2:rgba(192,57,43,0.13)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.db{font-family:var(--font-sans);font-size:13px}
+.db-head{background:var(--fr);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:14px;border-radius:var(--border-radius-lg) var(--border-radius-lg) 0 0}
+.db-logo{background:#fff;border-radius:6px;width:38px;height:38px;display:flex;align-items:center;justify-content:center}
+.db-logo-inner{color:var(--fr);font-family:var(--font-mono);font-size:16px;font-weight:500;letter-spacing:-1px}
+.db-htitle{font-size:12px;font-weight:500;line-height:1.3;letter-spacing:.01em}
+.db-hsub{font-size:10px;opacity:.75;margin-top:2px}
+.db-hright{margin-left:auto;display:flex;gap:8px;align-items:center}
+.db-version{font-family:var(--font-mono);font-size:9px;background:rgba(255,255,255,.2);padding:2px 7px;border-radius:4px}
+.ctx-bar{background:var(--fr-bg);border-left:3px solid var(--fr);padding:10px 18px;display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+.ctx-item{display:flex;flex-direction:column;min-width:120px}
+.ctx-label{font-size:9px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+.ctx-val{font-size:11px;font-weight:500;color:var(--color-text-primary);margin-top:2px;line-height:1.4}
+.ctx-alert{margin-left:auto;background:var(--fr-bg2);border:0.5px solid var(--fr);border-radius:var(--border-radius-md);padding:6px 10px;font-size:10px;color:var(--fr);font-weight:500;white-space:nowrap}
+.main{padding:14px 18px;display:flex;flex-direction:column;gap:16px}
+.section-block{}
+.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:1.5px solid var(--fr)}
+.sec-code{font-family:var(--font-mono);font-size:10px;font-weight:500;background:var(--fr);color:#fff;padding:2px 7px;border-radius:3px;letter-spacing:.02em}
+.sec-name{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.sec-flag{font-size:9px;color:var(--color-text-secondary);font-style:italic;margin-left:auto}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px}
+.mod-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:9px 11px;cursor:default}
+.mod-card:hover{border-color:var(--color-border-secondary)}
+.mod-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.mod-code{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--fr)}
+.mod-flags{display:flex;gap:3px;align-items:center}
+.badge{font-size:8px;padding:1px 5px;border-radius:8px;font-weight:500;white-space:nowrap}
+.b-todo{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.b-progress{background:var(--fr-bg2);color:var(--fr)}
+.b-done{background:var(--color-background-success);color:var(--color-text-success)}
+.b-locked{background:var(--color-background-secondary);color:var(--color-text-tertiary)}
+.b-star{font-size:9px;color:var(--fr)}
+.b-sc{font-family:var(--font-mono);font-size:8px;background:var(--color-background-secondary);color:var(--color-text-secondary);padding:1px 4px;border-radius:3px}
+.mod-name{font-size:11px;font-weight:500;color:var(--color-text-primary);line-height:1.35;margin-bottom:3px}
+.mod-desc{font-size:9px;color:var(--color-text-secondary);line-height:1.4}
+.mod-actions{display:flex;gap:5px;margin-top:7px;align-items:center}
+.btn-start{font-size:9px;padding:3px 8px;background:var(--fr);color:#fff;border:none;border-radius:3px;cursor:pointer;font-family:var(--font-sans);white-space:nowrap;flex-shrink:0}
+.btn-start:hover{background:var(--fr2)}
+.btn-start:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);cursor:not-allowed}
+.status-sel{font-size:9px;padding:2px 3px;border:0.5px solid var(--color-border-tertiary);border-radius:3px;background:var(--color-background-primary);color:var(--color-text-secondary);font-family:var(--font-sans);cursor:pointer;flex:1;min-width:0}
+.footer-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 18px;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);border-radius:0 0 var(--border-radius-lg) var(--border-radius-lg)}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--color-text-secondary)}
+.btn-ctx{font-size:9px;padding:4px 10px;background:transparent;border:0.5px solid var(--fr);color:var(--fr);border-radius:3px;cursor:pointer;font-family:var(--font-sans);margin-left:auto}
+.btn-ctx:hover{background:var(--fr-bg)}
+.progress-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.prog-bar-wrap{flex:1;height:3px;background:var(--color-border-tertiary);border-radius:2px}
+.prog-bar{height:3px;background:var(--fr);border-radius:2px;transition:width .3s}
+.prog-label{font-size:9px;color:var(--color-text-secondary);white-space:nowrap;font-family:var(--font-mono)}
+</style>
+
+<h2 class="sr-only">Tableau de bord — Observatoire FACC · Projet Baromètre national 2026</h2>
+
+<div class="db">
+<div class="db-head">
+  <div class="db-logo"><div class="db-logo-inner">f.</div></div>
+  <div>
+    <div class="db-htitle">Observatoire national de l'action culturelle cinématographique et audiovisuelle</div>
+    <div class="db-hsub">Fédération de l'action culturelle cinématographique · Projet 2025–2026</div>
+  </div>
+  <div class="db-hright">
+    <div class="progress-row" style="width:160px">
+      <div class="prog-bar-wrap"><div class="prog-bar" id="global-bar" style="width:0%"></div></div>
+      <div class="prog-label" id="global-label">0%</div>
+    </div>
+    <div class="db-version">v1.0 · avr. 2026</div>
+  </div>
+</div>
+
+<div class="ctx-bar">
+  <div class="ctx-item">
+    <span class="ctx-label">Porteur</span>
+    <span class="ctx-val">Olivier Meneux<br>Coord. général FACC · consultant</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Partenaire structurel</span>
+    <span class="ctx-val">CNC — convention<br>pluriannuelle 2025</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Partenaires en cours</span>
+    <span class="ctx-val">Régions de France<br>OPC · DEPS · Ciclic</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Jalons 2026</span>
+    <span class="ctx-val">Enquête printemps<br>Comité suivi juin<br>Panorama fin 2026</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Charte doc.</span>
+    <span class="ctx-val">Calibri · #C0392B<br>A4 · marges 2,1 cm</span>
+  </div>
+  <div class="ctx-item">
+    <span class="ctx-label">Budget 2026</span>
+    <span class="ctx-val">79 400 €</span>
+  </div>
+  <div class="ctx-alert">★ M-1 · variable stratégique · à traiter avant E et L</div>
+</div>
+
+<div class="main" id="main"></div>
+
+<div class="footer-bar">
+  <div class="leg-item"><span class="badge b-todo">à faire</span></div>
+  <div class="leg-item"><span class="badge b-progress">en cours</span></div>
+  <div class="leg-item"><span class="badge b-done">stabilisé</span></div>
+  <div class="leg-item"><span class="badge b-locked">verrouillé</span></div>
+  <div class="leg-item"><span class="b-star">★</span> variable stratégique</div>
+  <div class="leg-item"><span class="b-sc">[sc]</span> scénarisé A→B</div>
+  <button class="btn-ctx" onclick="sendCtxPrompt()">↗ Envoyer le contexte global en session</button>
+</div>
+</div>
+
+<script>
+const SECTIONS=[
+  {id:'CTX',name:'Contexte et identité',flag:'non scénarisé',mods:[
+    {c:'CTX-1',n:'Identité du porteur',d:'Olivier Meneux, coord. général FACC et consultant — positionnement du locuteur selon les productions',s:'done'},
+    {c:'CTX-2',n:'Charte documentaire FACC',d:'Calibri · C0392B · A4 · marges 2,1 cm · filets rouge · pied de page FACC',s:'done'},
+    {c:'CTX-3',n:'Calendrier et jalons 2026',d:'Enquête printemps · comité de suivi juin · conventions CNC–Régions 2026–2028 · panorama fin 2026',s:'progress'},
+    {c:'CTX-4',n:'Critères de qualité des livrables',d:'Référentiel d\'évaluation à co-construire : cohérence stratégique · justesse du registre · opérationnalité',s:'todo'},
+  ]},
+  {id:'P',name:'Partenariats institutionnels',flag:'itératif · révisable',mods:[
+    {c:'P-1',n:'CNC / DESPRO',d:'Convention pluriannuelle 2025 · partenaire structurel · comité de suivi dédié',s:'done'},
+    {c:'P-2',n:'Régions de France',d:'Note envoyée · interlocuteurs : G. Durand / C. Morin-Desailly · conventionnement à formaliser',s:'progress'},
+    {c:'P-3',n:'OPC — Grenoble',d:'Séquence : Cartocrise T2 2026 → co-construction baromètre automne 2026',s:'todo'},
+    {c:'P-4',n:'DEPS — Ministère Culture',d:'Reconnaissance méthodologique · labellisation éventuelle de l\'enquête dans le système statistique public',s:'todo'},
+    {c:'P-5',n:'Délégué interministériel EAC',d:'Dialogue sur la validation du questionnaire · légitimité interministérielle de la démarche',s:'todo'},
+  ]},
+  {id:'M',name:'Méthodologie de l\'observatoire',flag:'non scénarisé',mods:[
+    {c:'M-1',n:'Périmètre et nomenclature',d:'Typologies acteurs · formats juridiques · échelles d\'intervention — TRAITER EN PRIORITÉ',s:'progress',star:true},
+    {c:'M-2',n:'Batterie d\'indicateurs',d:'5 domaines : activité · publics · emploi · modèles économiques · ancrage territorial',s:'todo'},
+    {c:'M-3',n:'Architecture en 4 phases',d:'Cadrage → qualitatif → quantitatif → panorama · livrables et calendrier par phase',s:'progress'},
+    {c:'M-4',n:'Gouvernance et comité de suivi',d:'Préfiguration juin 2026 · composition · rôles · principes de décision et de litige',s:'todo'},
+    {c:'M-5',n:'Sources de données institutionnelles',d:'CNC open data · DEPS · OPC · data.culture.gouv.fr · INSEE · Fédélima',s:'done'},
+  ]},
+  {id:'E',name:'Enquête quantitative nationale',flag:'partiellement scénarisé',mods:[
+    {c:'E-1',n:'Stratégie de ciblage',d:'~3 000 structures · membres FACC + acteurs hors membres · logique d\'observatoire ouvert',s:'todo'},
+    {c:'E-2',n:'Architecture du questionnaire',d:'LimeSurvey · tokens individuels · logique conditionnelle · 50–80 questions · export CSV/XLSX',s:'todo'},
+    {c:'E-3',n:'Protocole de validation',d:'3 structures-test expertes · 3 mini-groupes thématiques · validation 5 structures / 5 domaines',s:'todo'},
+    {c:'E-4',n:'Valeur retournée aux répondants',d:'Rapport personnalisé · benchmarking sectoriel · données utilisables en bilans d\'activité et dossiers de subvention',s:'todo',sc:true},
+    {c:'E-5',n:'Collecte, traitement, restitution',d:'Export structuré · annuaire vivant des acteurs · tableau de bord interactif · publication publique',s:'todo'},
+  ]},
+  {id:'L',name:'Livrables et productions',flag:'catalogue évolutif',mods:[
+    {c:'L-1',n:'Communications institutionnelles',d:'Emails · courriers · registre partenarial · co-constructif · jamais hiérarchique',s:'progress'},
+    {c:'L-2',n:'Notes Word (charte FACC)',d:'Calibri · C0392B · A4 · Python/OOXML · filet bas rouge · pied de page FACC',s:'progress'},
+    {c:'L-3',n:'Présentations (pptxgenjs)',d:'16/9 · charte FACC · modèle de référence : panorama pôles régionaux Rouen mars 2026',s:'progress'},
+    {c:'L-4',n:'Outils numériques',d:'Carte Leaflet.js (vecteurs, sans tuiles) · questionnaire LimeSurvey · iframe GitHub Pages / WordPress',s:'progress'},
+    {c:'L-5',n:'Documents méthodologiques',d:'Cadre d\'observation · nomenclature · protocole d\'enquête · grille d\'indicateurs',s:'todo'},
+    {c:'L-6',n:'Panorama / rapport annuel',d:'Publication fin 2026 · rapport synthétique + tableau de bord · restitution différenciée répondants',s:'todo',locked:true},
+  ]},
+  {id:'V',name:'Veille et alimentation continue',flag:'itératif',mods:[
+    {c:'V-1',n:'Sources CNC (mensuel)',d:'cnc.fr/etudes · statistiques par secteur · bilans annuels · open data XLS',s:'todo'},
+    {c:'V-2',n:'Sources DEPS (trimestriel)',d:'Chiffres clés culture · Culture études · programme de travail · atlasculture.fr',s:'todo'},
+    {c:'V-3',n:'Sources OPC / sectorielles',d:'Baromètre des collectivités · Cartocrise · Fédélima · data.culture.gouv.fr',s:'todo'},
+    {c:'V-4',n:'Cycle baromètre annuel',d:'Rouverture questionnaire chaque printemps · intégration données institutionnelles · publication comparée',s:'todo',locked:true},
+  ]},
+  {id:'SRC',name:'Notes de terrain',flag:'sources · format distinct · pas de statut',mods:[
+    {c:'SRC-terrain',n:'Notes de terrain — à créer',d:'Contexte de recueil · verbatims · enseignements directs · pas d\'interprétation — sources, pas livrables',s:'todo'},
+  ]},
+];
+
+const PROMPTS={
+  'CTX-1':`[MODULE CTX-1 — Identité du porteur]\n\nContexte projet : Observatoire national de l'action culturelle cinématographique et audiovisuelle, porté par la FACC (https://federation-acc.org).\n\nTu travailles avec Olivier Meneux, coordinateur général de la FACC et consultant. Selon la nature du livrable, tu rédiges en son nom et au nom de la FACC (première personne institutionnelle) ou en tant que conseiller produisant un document "sur" la FACC. Précise toujours depuis quelle position tu rédiges avant de produire. Sur la base de ce module, propose un texte de positionnement locuteur clair et opérationnel pour figurer en tête du prompt-contexte global.`,
+  'CTX-2':`[MODULE CTX-2 — Charte documentaire FACC]\n\nContexte : Observatoire FACC.\n\nCharte documentaire établie à partir de la note de présentation (Régions de France, mars 2026) :\n- Police : Calibri (défaut document)\n- Format : A4 (11906 × 16838 DXA)\n- Marges : 2,1 cm tous côtés (1200 DXA)\n- Bloc titre : fond #C0392B · texte blanc centré · 18pt gras (titre) / 11pt (sous-titre)\n- Titres de section : 14pt gras #C0392B + filet bas rouge #C00000 (single, sz=4)\n- Pied de page : "FACC – federation-acc.org – [titre] – [date]"\n- Listes : style "Paragraphedeliste"\n\nProduis une fiche de référence synthétique de cette charte, prête à être insérée dans le prompt-contexte global et utilisée pour toute production documentaire.`,
+  'CTX-3':`[MODULE CTX-3 — Calendrier et jalons 2026]\n\nContexte : Observatoire FACC.\n\nJalons connus :\n- Printemps 2026 : fenêtre d'envoi de l'enquête quantitative nationale\n- Juin 2026 : préfiguration du comité de suivi\n- 2026–2028 : renouvellement des conventions CNC–État–Régions\n- Fin 2026 : publication du premier panorama\n\nProduis un calendrier de projet structuré mois par mois, de mai à décembre 2026, avec les actions prioritaires, les jalons décisionnels et les livrables attendus. Signale les dépendances entre modules (ex : M-1 doit être stabilisé avant E-2).`,
+  'CTX-4':`[MODULE CTX-4 — Critères de qualité des livrables]\n\nContexte : Observatoire FACC.\n\nSur la base du projet et des destinataires identifiés (CNC, Régions de France, OPC, DEPS, professionnels du secteur, adhérents FACC), propose un référentiel de qualité pour les productions du projet. Pour chaque type de livrable (communication institutionnelle, note Word, présentation, outil numérique, document méthodologique), définis 3 à 5 critères d'évaluation opérationnels permettant de déterminer si le livrable est "prêt à l'emploi".`,
+  'P-1':`[MODULE P-1 — Partenariat CNC / DESPRO]\n\nContexte : Observatoire FACC · partenariat structurel stabilisé depuis 2025.\n\nLa FACC bénéficie d'une convention pluriannuelle CNC depuis 2025. La DESPRO (Direction des études, de la statistique et de la prospective du CNC) est l'interlocuteur principal pour l'observatoire.\n\nProduis une note de cadrage sur ce partenariat : nature de la relation actuelle, données CNC accessibles (open data : https://www.cnc.fr/-/statistiques-par-secteur-open-dat-1), périmètre du dialogue à construire sur les indicateurs de l'observatoire, rôle du CNC dans la gouvernance du comité de suivi.`,
+  'P-2':`[MODULE P-2 — Partenariat Régions de France]\n\nContexte : Observatoire FACC · partenariat en cours de formalisation.\n\nInterlocuteurs : Ganesh P. Durand (chargé de mission) et Catherine Morin-Desailly (vice-présidente, Régions de France).\nUne note de présentation a été envoyée (mars 2026). L'argument central : le renouvellement des conventions CNC–État–Régions 2026–2028 rend la coopération d'autant plus stratégique.\n\nProduis le prochain document ou message à envoyer dans le cadre de ce partenariat. Précise si tu as besoin de connaître le contenu de la note déjà envoyée pour adapter la suite.`,
+  'P-3':`[MODULE P-3 — Partenariat OPC]\n\nContexte : Observatoire FACC · partenariat à engager.\n\nL'Observatoire des politiques culturelles (OPC, Grenoble, observatoire-culture.net) est co-dirigé par Vincent Guillon et Emmanuel Vergès. Stratégie en deux temps :\n1. T2 2026 : rejoindre Cartocrise comme organisation associée (cartocrise@observatoire-culture.net) — signal de coopération à bas coût\n2. Automne 2026 : proposer une co-construction du baromètre cinématographique\n\nProduis le premier document ou message d'amorce pour ce partenariat. Registre : analytique, complémentaire, non concurrent.`,
+  'P-4':`[MODULE P-4 — DEPS / Ministère de la Culture]\n\nContexte : Observatoire FACC · partenariat à engager.\n\nLe DEPS (Département des études, de la prospective, des statistiques et de la documentation) est le service statistique ministériel du ministère de la Culture. Contact : culture.gouv.fr/[...]/deps.\nObjectif : reconnaissance méthodologique de l'enquête, éventuelle intégration dans le système statistique public.\n\nProduis une stratégie d'approche et un premier document de prise de contact, en valorisant la complémentarité entre l'enquête FACC (secteur peu documenté) et les travaux DEPS.`,
+  'P-5':`[MODULE P-5 — Délégué interministériel EAC]\n\nContexte : Observatoire FACC · partenariat à engager.\n\nLe délégué interministériel à l'éducation artistique et culturelle est un interlocuteur stratégique pour la validation du questionnaire et la légitimité institutionnelle de la démarche.\n\nProduis une stratégie d'approche et les éléments de langage pour cette prise de contact. Valorise la dimension EAC de l'observatoire et la complémentarité avec les données disponibles via les dispositifs scolaires (École au cinéma, Collège au cinéma, LAC).`,
+  'M-1':`[MODULE M-1 — VARIABLE STRATÉGIQUE ★ — Périmètre et nomenclature des acteurs]\n\nContexte : Observatoire FACC · à traiter AVANT E et L.\n\nChamp couvert : diffusion culturelle cinématographique itinérante · festivals · pôles régionaux d'éducation aux images · éducation en milieu scolaire (École/Collège/Lycéens au cinéma) · éducation hors temps scolaire (Passeurs d'images, Archipel des Lucioles) · médiation cinématographique · collectifs émergents.\n\nProduis :\n1. Une nomenclature opérationnelle des acteurs (applicable à une base de données) par type de mission, format juridique et échelle d'intervention\n2. Une définition précise des critères d'inclusion/exclusion dans le périmètre de l'observatoire\n3. Un identifiant unique proposé par structure (SIREN/RNA + coordonnées + catégorie)`,
+  'M-2':`[MODULE M-2 — Batterie d'indicateurs]\n\nContexte : Observatoire FACC.\n\nCinq domaines d'observation : activité · publics · emploi et ressources humaines · modèles économiques · ancrage territorial.\n\nProduis, pour chaque domaine :\n- Les 5 à 8 indicateurs quantitatifs prioritaires (directement mesurables par questionnaire)\n- Les 2 à 3 dimensions qualitatives associées (captures par guide d'entretien)\n- Les définitions précises à retenir (ex : qu'est-ce qu'une "séance" ? un "bénéficiaire" ?)`,
+  'M-3':`[MODULE M-3 — Architecture en 4 phases]\n\nContexte : Observatoire FACC.\n\nPhases : (1) cadrage méthodologique · (2) enquête qualitative automne 2025–printemps 2026 · (3) enquête quantitative nationale 2026 · (4) publication premier panorama fin 2026.\n\nProduis un document de cadrage opérationnel avec pour chaque phase : objectifs précis · livrables attendus · ressources nécessaires · dépendances · jalons de validation.`,
+  'M-4':`[MODULE M-4 — Gouvernance et comité de suivi]\n\nContexte : Observatoire FACC · comité à préfigurer pour juin 2026.\n\nPrincipe cardinal : l'observatoire est ouvert à toutes les structures du secteur, membres FACC ou non. La gouvernance doit garantir cette indépendance.\n\nProduis : composition proposée du comité · rôles de chaque partie · fréquence de réunion · principes de décision · clause de litige · document de présentation à envoyer aux futurs membres.`,
+  'M-5':`[MODULE M-5 — Sources de données institutionnelles]\n\nContexte : Observatoire FACC · sources vérifiées.\n\nSources établies :\n- CNC open data : https://www.cnc.fr/-/statistiques-par-secteur-open-dat-1\n- CNC bilans : https://www.cnc.fr/professionnels/etudes-et-rapports/bilans\n- Établissements cinéma : https://data.culture.gouv.fr/explore/dataset/etablissements-cinematographiques/\n- DEPS statistiques : https://www.culture.gouv.fr/espace-documentation/statistiques-ministerielles-de-la-culture2/statistiques-culturelles\n- OPC publications : https://www.observatoire-culture.net/publications/\n- Cartocrise : https://www.cartocrise-culture.net\n\nProduis un protocole annuel de récupération et d'intégration de ces données dans l'observatoire.`,
+  'E-1':`[MODULE E-1 — Stratégie de ciblage]\n\nContexte : Observatoire FACC · enquête nationale printemps 2026.\n\nCible : ~3 000 structures du secteur · ouvert aux membres FACC ET aux acteurs hors membres (principe d'observatoire sectoriel indépendant).\n\nProduis : stratégie de constitution de la liste des structures · canaux de diffusion · taux de réponse cible · argumentaire d'invitation · gestion des relances.`,
+  'E-2':`[MODULE E-2 — Architecture du questionnaire]\n\nContexte : Observatoire FACC · outil : LimeSurvey (tokens individuels, reprise possible, export CSV/XLSX).\n\nProduis : plan détaillé du questionnaire (50–80 questions) structuré par domaine (activité · publics · emploi · finances · territoire) · logique conditionnelle proposée · format des questions · instructions aux répondants.`,
+  'E-3':`[MODULE E-3 — Protocole de validation]\n\nContexte : Observatoire FACC.\n\nValidation prévue : 3 structures-test expertes → 3 mini-groupes de travail thématiques → validation multi-domaines (5 structures dans 5 domaines) → dialogue DESPRO/CNC + délégué interministériel EAC + OPC.\n\nProduis : protocole détaillé de validation · grille de retour pour les structures-test · critères d'arrêt et de révision · calendrier.`,
+  'E-4':`[MODULE E-4 — Valeur retournée aux répondants · scénarisé A→B]\n\nContexte : Observatoire FACC · levier central d'incitation à la participation.\n\nScénario A — Rapport personnalisé standard : chaque répondant reçoit un document PDF avec ses données positionnées dans le paysage sectoriel.\nScénario B — Tableau de bord interactif individualisé : accès à un espace en ligne avec ses données et des comparaisons dynamiques.\n\nDéveloppe le scénario que tu jugeras le plus réaliste compte tenu du budget (79 400 €) en détaillant le contenu, la forme et la faisabilité technique.`,
+  'E-5':`[MODULE E-5 — Collecte, traitement, restitution]\n\nContexte : Observatoire FACC.\n\nProduis : protocole complet de collecte (fenêtre, relances, clôture) · structure de la base de données (format, champs, clés d'identification) · procédure de traitement statistique · modalités de publication et de restitution différenciée (répondants / institutions / grand public).`,
+  'L-1':`[MODULE L-1 — Communications institutionnelles]\n\nContexte : Observatoire FACC · registre partenarial, co-constructif, jamais hiérarchique.\n\nProduis le document de communication institutionnelle demandé. Précise : destinataire · objectif · ton adapté au public · version envoyable directement.`,
+  'L-2':`[MODULE L-2 — Note Word charte FACC]\n\nContexte : Observatoire FACC · charte documentaire FACC.\n\nCharte : Calibri · #C0392B · A4 (11906×16838 DXA) · marges 1200 DXA · bloc titre fond rouge/blanc · titres 14pt gras rouge + filet bas #C00000 sz=4 · pied de page FACC.\n\nProduis la note demandée au format Word (.docx) en respectant scrupuleusement cette charte. Utilise Python/OOXML (docx-js) pour la génération.`,
+  'L-3':`[MODULE L-3 — Présentation pptxgenjs]\n\nContexte : Observatoire FACC · modèle de référence : panorama pôles régionaux, 15 slides, Rouen mars 2026.\n\nProduis la présentation demandée en pptxgenjs, en respectant la charte FACC (rouge C0392B · Calibri · sobriété analytique). Précise le nombre de slides, le plan et les visuels à intégrer.`,
+  'L-4':`[MODULE L-4 — Outils numériques]\n\nContexte : Observatoire FACC.\n\nOutils en cours : carte interactive Leaflet.js (vecteurs sans tuiles, filtres par catégorie, ~50 structures, iframe GitHub Pages) · questionnaire LimeSurvey.\n\nProduis l'évolution ou le nouvel outil numérique demandé. Précise la technologie, la structure des données et les modalités d'intégration WordPress.`,
+  'L-5':`[MODULE L-5 — Documents méthodologiques et scientifiques]\n\nContexte : Observatoire FACC · registre académique appliqué · précis et sourcé.\n\nProduis le document méthodologique demandé (cadre d'observation · nomenclature · protocole · grille d'indicateurs). Toute donnée citée doit être sourcée ou clairement identifiée comme estimation.`,
+  'L-6':`[MODULE L-6 — Panorama / rapport annuel · VERROUILLÉ]\n\nCe module s'active à la fin du cycle d'enquête et de collecte (fin 2026). Il est verrouillé jusqu'à stabilisation des modules E et M.`,
+  'V-1':`[MODULE V-1 — Veille CNC (mensuel)]\n\nContexte : Observatoire FACC.\n\nSources : https://www.cnc.fr/professionnels/etudes-et-rapports · statistiques par secteur open data XLS · bilans annuels.\n\nProduis un protocole de veille mensuelle CNC : quelles pages surveiller · à quelle fréquence · comment intégrer les nouvelles données dans la base observatoire.`,
+  'V-2':`[MODULE V-2 — Veille DEPS (trimestriel)]\n\nContexte : Observatoire FACC.\n\nSources : Chiffres clés culture (annuel) · Culture études · programme de travail DEPS · atlasculture.fr · données dépenses culturelles collectivités (quinquennal).\n\nProduis un protocole de veille trimestrielle DEPS avec calendrier d'actualisation.`,
+  'V-3':`[MODULE V-3 — Veille OPC / sectorielles]\n\nContexte : Observatoire FACC.\n\nSources : Baromètre des collectivités OPC · Cartocrise (cartocrise-culture.net) · Fédélima (fedelima.org) · data.culture.gouv.fr · partenaires régionaux (Ciclic, pôles régionaux).\n\nProduis un protocole de veille sectorielle : sources à surveiller · fréquence · modalités d'intégration.`,
+  'V-4':`[MODULE V-4 — Cycle baromètre annuel · VERROUILLÉ]\n\nCe module s'active après la première publication du panorama (fin 2026). Il définit le cycle annuel de mise à jour de l'observatoire.`,
+  'SRC-terrain':`[NOTE DE TERRAIN · FORMAT DISTINCT]\n\nForme : (1) Contexte de recueil — qui, quand, dans quel cadre, quelle méthode. (2) Matière structurée — faits, verbatims significatifs, enseignements directs. Pas d'interprétation. Les notes SRC sont des sources, pas des livrables.\n\nDécris la note de terrain à créer (entretien, réunion, observation de terrain) et je la structure selon ce format.`,
+};
+
+const GLOBAL_CTX=`[CONTEXTE PROJET FACC — Observatoire national · Version 1.0 · Avril 2026]
+
+PORTEUR : Olivier Meneux, coordinateur général de la FACC (https://federation-acc.org) et consultant.
+TU RÉDIGES EN SON NOM ET AU NOM DE LA FACC, à la première personne institutionnelle, sauf instruction contraire.
+
+ORGANISATION :
+- 42 structures adhérentes + 2 membres individuels · présence toutes régions métropolitaines
+- Convention CNC pluriannuelle depuis 2025 · budget 2026 : 79 400 €
+
+CHAMP : Diffusion culturelle cinématographique · éducation aux images (scolaire et hors temps scolaire) · pôles régionaux · médiation · collectifs émergents.
+
+PROJET CENTRAL : Baromètre / Observatoire national de l'action culturelle cinématographique et audiovisuelle — outil sectoriel ouvert, indépendant de la logique de fédération. Phases : (1) cadrage → (2) qualitatif → (3) enquête quantitative ~3 000 structures LimeSurvey [printemps 2026] → (4) premier panorama [fin 2026]. Comité de suivi à préfigurer : juin 2026.
+
+PARTENAIRES : CNC/DESPRO [stabilisé] · Régions de France [en cours] · OPC [à engager T2 2026] · DEPS [à engager] · Délégué interministériel EAC.
+
+CHARTE DOCUMENTAIRE : Calibri · rouge #C0392B · A4 · marges 2,1 cm · titres 14pt gras + filet bas rouge · bloc titre fond rouge/blanc · pied de page "FACC – federation-acc.org – [titre] – [date]".
+
+PRINCIPE CARDINAL : L'observatoire est ouvert à TOUTES les structures du secteur, membres FACC ou non. Ne jamais le présenter comme un outil de la fédération.
+
+SOURCES VÉRIFIÉES :
+- CNC open data : https://www.cnc.fr/-/statistiques-par-secteur-open-dat-1
+- DEPS statistiques : https://www.culture.gouv.fr/espace-documentation/statistiques-ministerielles-de-la-culture2/statistiques-culturelles
+- OPC : https://www.observatoire-culture.net/publications/
+- Cartocrise : https://www.cartocrise-culture.net
+- data.culture.gouv.fr : https://data.culture.gouv.fr
+
+RÈGLES OPÉRATOIRES :
+- Toute source citée est vérifiée ou signalée comme estimation
+- Ne jamais présenter l'observatoire comme outil FACC exclusif
+- Adapter le registre au destinataire (CNC : rigoureux · Régions : partenarial/territorial · OPC : analytique · professionnels : pair à pair)
+- Ne pas envoyer de communications sans validation explicite`;
+
+const STMAP={todo:{cls:'b-todo',lbl:'à faire'},progress:{cls:'b-progress',lbl:'en cours'},done:{cls:'b-done',lbl:'stabilisé'},locked:{cls:'b-locked',lbl:'verrouillé'}};
+
+function statusCls(s){return (STMAP[s]||STMAP.todo).cls;}
+function statusLbl(s){return (STMAP[s]||STMAP.todo).lbl;}
+
+function loadStatus(code,def){
+  try{
+    const r=window.storage&&window.storage.get?null:null;
+    const k='facc_obs_'+code;
+    const stored=localStorage.getItem(k);
+    return stored||def;
+  }catch(e){return def;}
+}
+
+function saveStatus(code,val){
+  try{localStorage.setItem('facc_obs_'+code,val);}catch(e){}
+}
+
+function render(){
+  const el=document.getElementById('main');
+  if(!el)return;
+  let html='';
+  let total=0,done=0;
+  SECTIONS.forEach(sec=>{
+    html+=`<div class="section-block"><div class="sec-head"><span class="sec-code">${sec.id}</span><span class="sec-name">${sec.name}</span><span class="sec-flag">${sec.flag}</span></div><div class="modules-grid">`;
+    sec.mods.forEach(m=>{
+      const st=loadStatus(m.c,m.locked?'locked':m.s||'todo');
+      if(!m.locked){total++;if(st==='done')done++;}
+      const sc=m.sc?'<span class="b-sc">[sc]</span>':'' ;
+      const star=m.star?'<span class="b-star">★</span>':'';
+      const locked=st==='locked';
+      html+=`<div class="mod-card" id="card-${m.c}">
+        <div class="mod-top">
+          <span class="mod-code">${m.c}</span>
+          <div class="mod-flags">${star}${sc}<span class="badge ${statusCls(st)}" id="badge-${m.c}">${statusLbl(st)}</span></div>
+        </div>
+        <div class="mod-name">${m.n}</div>
+        <div class="mod-desc">${m.d}</div>
+        <div class="mod-actions">
+          <button class="btn-start" onclick="startModule('${m.c}')" ${locked?'disabled':''}>↗ démarrer</button>
+          <select class="status-sel" id="sel-${m.c}" onchange="changeStatus('${m.c}',this.value)" ${locked?'disabled':''}>
+            ${['todo','progress','done','locked'].map(v=>`<option value="${v}" ${st===v?'selected':''}>${statusLbl(v)}</option>`).join('')}
+          </select>
+        </div>
+      </div>`;
+    });
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+  updateGlobal(done,total);
+}
+
+function updateGlobal(done,total){
+  const pct=total?Math.round(done/total*100):0;
+  const bar=document.getElementById('global-bar');
+  const lbl=document.getElementById('global-label');
+  if(bar)bar.style.width=pct+'%';
+  if(lbl)lbl.textContent=pct+'% ('+done+'/'+total+')';
+}
+
+function changeStatus(code,val){
+  saveStatus(code,val);
+  const badge=document.getElementById('badge-'+code);
+  if(badge){badge.className='badge '+statusCls(val);badge.textContent=statusLbl(val);}
+  let total=0,done=0;
+  SECTIONS.forEach(s=>s.mods.forEach(m=>{
+    if(!m.locked){total++;const st=loadStatus(m.c,m.locked?'locked':m.s||'todo');if(st==='done')done++;}
+  }));
+  updateGlobal(done,total);
+}
+
+function startModule(code){
+  const prompt=PROMPTS[code];
+  if(!prompt)return;
+  sendPrompt(prompt);
+}
+
+function sendCtxPrompt(){
+  sendPrompt(GLOBAL_CTX+'\n\nSur la base de ce contexte, dis-moi sur quel module ou livrable tu souhaites avancer, ou pose-moi ta question.');
+}
+
+render();
+</script>
