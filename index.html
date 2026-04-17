@@ -304,6 +304,21 @@ function startModule(code){
 function sendCtxPrompt(){
   sendPrompt(GLOBAL_CTX+'\n\nSur la base de ce contexte, dis-moi sur quel module ou livrable tu souhaites avancer, ou pose-moi ta question.');
 }
+function sendPrompt(text){
+  navigator.clipboard.writeText(text).then(function(){
+    var btns=document.querySelectorAll('.btn-start');
+    btns.forEach(function(b){if(b.textContent==='✓ copié !')b.textContent='↗ démarrer';});
+    var btn=document.activeElement;
+    if(btn&&btn.classList.contains('btn-start')){
+      var orig=btn.textContent;
+      btn.textContent='✓ copié !';
+      setTimeout(function(){btn.textContent='↗ démarrer';},2000);
+    }
+  }).catch(function(){
+    window.prompt('Copiez ce prompt :',text);
+  });
+}
+
 
 render();
 </script>
